@@ -1,26 +1,46 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
-const puerto = 3000;
+const puerto = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.send('¡Hola, Express!');
-});
+//Sin esta linea esto no funcionaria cuando se suba a producción
+const cors = require('cors');
+const { productsGet } = require('./controllers/products.controllers');
+const { dbConnection } = require('./database/config');
 
-app.get('/products', (req, res) => {
-  res.send('GET / Products');
-});
+//Middelware's
+app.use(cors());
 
-app.post('/', (req, res) => {
-  res.send('POST / Products');
-});
+//sin esta linea no se puede recibir datos JSON en los POST 
+app.use(express.json());
 
-app.put('/', (req, res) => {
-  res.send('PUT / Products');
-});
+// app.get('/', (req, res) => {
+//   res.send('¡Hola, Express!');
+// });
 
-app.delete('/', (req, res) => {
-  res.send('DELETE / Products');
-});
+// app.get('/products', (req, res) => {
+//   res.send('GET / Products');
+// });
+
+// app.post('/products', (req, res) => {
+//   res.send('POST / Products');
+// });
+
+// app.put('/products', (req, res) => {
+//   res.send('PUT / Products');
+// });
+
+// app.delete('/products', (req, res) => {
+//   res.send('DELETE / Products');
+// });
+(async()=>{
+
+//... queremos usar un await en el futuro
+await dbConnection();
+//carga de rutas
+
+app.use(productsGet);
+})();
 app.listen(puerto, () => {
   console.log('Servidor escuchando en http://localhost:' + puerto);
 });
