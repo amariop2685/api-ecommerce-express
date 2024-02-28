@@ -1,6 +1,7 @@
 const {request, response} = require('express');
 const User = require('../models/User.model');
 const bcrypt = require('bcrypt');
+const { use } = require('bcrypt/promises');
 const salt = 10;
 
 const usersGet = async (req = request, res = response) => {
@@ -18,13 +19,37 @@ const usersPost = async (req = request, res = response) => {
     let user = User(body);
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
-
     res.status(200).json({
         message: "agregados correctamente",
         data: body
     
 });
 }
+
+const loginPost = async (req = request, res = response) => {
+    const body = req.body;
+    const userInformationDb = await User.findOne({email: body.email, active: true});
+if(userInformationDb == null){
+    res.status(400).json({
+        message: "User not found or User not active",
+        data: null
+    }); 
+}
+
+    const comparePswrd = await bcrypt.compare(body.password, userInformationDb.password);
+    if (comparePswrd == false){
+        res.status(400).json({
+            message: "logeo Incorrecto",
+            data: null
+        });}else{
+
+        res.status(200).json({
+            message: "logeo Correcto",
+            data: "token"
+        });
+    }
+}
+
 const usersPut = async(req = request, res = response) => {
     const {id} = req.query;
     const bodyUpdate = req.body
@@ -50,5 +75,6 @@ module.exports = {
     usersGet,
     usersPost,
     usersPut,
-    usersDelete
+    usersDelete,
+    loginPost
 }
