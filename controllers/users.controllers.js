@@ -1,7 +1,7 @@
 const {request, response} = require('express');
 const User = require('../models/User.model');
 const bcrypt = require('bcrypt');
-const { use } = require('bcrypt/promises');
+const jwt = require('jsonwebtoken');
 const salt = 10;
 
 const usersGet = async (req = request, res = response) => {
@@ -42,10 +42,14 @@ if(userInformationDb == null){
             message: "logeo Incorrecto",
             data: null
         });}else{
-
-        res.status(200).json({
-            message: "logeo Correcto",
-            data: "token"
+        
+        const payload = {
+            full_name: `${userInformationDb.name} ${userInformationDb.last_name}`
+          
+        };
+            res.status(200).json({
+                message: "logeo Correcto",
+                data: jwt.sign(payload,process.env.JWT_SIGNATURE,{expiresIn:'1h'})
         });
     }
 }
