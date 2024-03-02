@@ -4,7 +4,7 @@ const router = Router();
 const guardToken = require('../middleware/auth.middleware');
 
 
-router.get('/users', guardToken,  usersGet);
+router.get('/users',  usersGet);
 
 router.post('/users', guardToken,usersPost);
 
