@@ -5,7 +5,7 @@ const guardToken = require('../middleware/auth.middleware');
 
 
 
-router.get('/products', guardToken,productsGet);
+router.get('/products',productsGet);
 
 router.post('/products', guardToken, productsPost);
 
