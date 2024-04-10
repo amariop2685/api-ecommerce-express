@@ -3,7 +3,14 @@ const Product = require('../models/Product.model');
 
 const productsGet = async (req = request, res = response) => {
 
-    const products = await Product.find();
+    const id = req.query.id;
+    
+    let products = [];
+    if (id) {
+        products = await Product.findByid(id);
+    } else {
+        products = await Product.find();
+    }
     
     res.status(200).json({
         message: "datos listados correctamente",
@@ -23,9 +30,9 @@ const productsPost = async (req = request, res = response) => {
 });
 }
 const productsPut = async(req = request, res = response) => {
-    const {id} = req.query;
-    const bodyUpdate = req.body
-    const updateProduct = await Product.findByIdAndUpdate(id, bodyUpdate,{new:true});
+    const { id } = req.query;
+    const productToEdit = req.body;
+    const updateProduct = await Product.findByIdAndUpdate(id, bodyUpdate, { new:true });
 
     res.status(200).json({
         message: "Actualizado correctamente",
@@ -33,7 +40,7 @@ const productsPut = async(req = request, res = response) => {
     });
 }
 const productsDelete = async(req = request, res = response) => {
-    const {id} =req.query;
+    const { id } =req.query;
     await Product.findByIdAndDelete(id);
 
     res.status(200).json({
