@@ -70,12 +70,13 @@ const loginPost = async (req = request, res = response) => {
     const body = req.body;
 
     const userInformationDb = await User.findOne({email: body.email, active: true});
-    
+
 if(userInformationDb == null){
     res.status(400).json({
         message: "User not found or User not active",
         data: null
     }); 
+    return;
 }
 
     const comparePswrd = await bcrypt.compare(body.password, userInformationDb.password);
@@ -83,12 +84,16 @@ if(userInformationDb == null){
         res.status(400).json({
             message: "logeo Incorrecto",
             data: null
-        });}else{
+        });
+        return;
+    }
         
         const payload = {
-            full_name: `${userInformationDb.name} ${userInformationDb.last_name}`
+            id: userInformationDb._id,
+            full_name: `${userInformationDb.name} ${userInformationDb.last_name}`,
+            email: userInformationDb.email
+          };
           
-        };
             res.status(200).json({
                 message: "logeo Correcto",
                 data: jwt.sign(payload,process.env.JWT_SIGNATURE)
