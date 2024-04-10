@@ -5,8 +5,8 @@ const puerto = process.env.PORT;
 
 //Sin esta linea esto no funcionaria cuando se suba a producción
 const cors = require('cors');
-const productRoutes = require('./routes/products.routes');
-const userRoutes = require('./routes/users.routes');
+const productRoutes = require('./routes/product.routes');
+const userRoutes = require('./routes/user.routes');
 const { dbConnection } = require('./database/config');
 
 //Middelware's

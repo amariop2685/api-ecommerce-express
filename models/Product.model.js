@@ -8,7 +8,7 @@ const ProductsSchema = Schema({
         type:String
     },
     price:{
-        type:String
+        type:Number
     },
     stock:{
         type:Number

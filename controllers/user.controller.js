@@ -6,11 +6,18 @@ const salt = 10;
 
 const usersGet = async (req = request, res = response) => {
 
-    const users = await User.find();
+    const tokenInfo = req.user;
+    const profileRaw = await User.findById(tokenInfo.id);
+    const profile = {
+        name: profileRaw.name,
+        last_name: profileRaw.last_name,
+        email: profileRaw.email,
+        dob: profileRaw.dob
+    };
     
     res.status(200).json({
         message: "datos listados correctamente",
-        data: users
+        data: profile
     });
 }
 const usersPost = async (req = request, res = response) => {
@@ -50,7 +57,7 @@ const usersPut = async(req = request, res = response) => {
 }
 
 const usersDelete = async(req = request, res = response) => {
-    const {id} =req.query;
+    const { id } =req.query;
     await User.findByIdAndDelete(id);
 
     res.status(200).json({
@@ -61,7 +68,9 @@ const usersDelete = async(req = request, res = response) => {
 
 const loginPost = async (req = request, res = response) => {
     const body = req.body;
+
     const userInformationDb = await User.findOne({email: body.email, active: true});
+    
 if(userInformationDb == null){
     res.status(400).json({
         message: "User not found or User not active",
