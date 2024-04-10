@@ -5,9 +5,9 @@ const router = Router();
 
 router.get('/users', chkToken,  usersGet);
 
-router.post('/users',usersPost);
+router.post('/users', usersPost);
 
-router.post('/login', chkToken, loginPost);
+router.post('/login', loginPost);
 
 router.put('/users', chkToken, usersPut);
 
