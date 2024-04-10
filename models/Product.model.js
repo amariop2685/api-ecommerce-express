@@ -13,10 +13,10 @@ const ProductsSchema = Schema({
     stock:{
         type:Number
     },
-    category:{
+    categories:{
         type:Array
     },
-    maker:{
+    manufacturer:{
         type:String
     },
     sku:{
