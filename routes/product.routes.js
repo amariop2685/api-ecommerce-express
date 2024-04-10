@@ -1,6 +1,7 @@
-const{Router} = require('express');
-const { productsGet,productsPost,productsPut,productsDelete } = require('../controllers/product.controller');
+const { Router } = require('express');
+const { productsGet, productsPost, productsPut, productsDelete } = require('../controllers/product.controller');
 const router = Router();
+
 const guardToken = require('../middleware/auth.middleware');
 
 
