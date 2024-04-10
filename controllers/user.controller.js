@@ -93,14 +93,12 @@ if(userInformationDb == null){
             full_name: `${userInformationDb.name} ${userInformationDb.last_name}`,
             email: userInformationDb.email
           };
-          
+
             res.status(200).json({
                 message: "logeo Correcto",
                 data: jwt.sign(payload,process.env.JWT_SIGNATURE)
         });
     }
-}
-
 
 
 
